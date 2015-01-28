@@ -1,61 +1,90 @@
 package hadoopFinal.model;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 
-public class Site {
-	private double Size;
-	private URL url;
-	private double averageResponse;
-	private double averageBytes;
-	private double timeStamp;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.WritableComparable;
+
+public class Site implements WritableComparable<Site>{
+	private LongWritable size;
+	private Text url;
+	private LongWritable averageResponse;
+	private LongWritable averageBytes;
+	private DoubleWritable timeStamp;
 	
 	
-	
-	public Site(double size, String url, double averageResponse,
-			double averageBytes, double timeStamp) throws MalformedURLException {
+
+
+	public Site(long size, String url, long averageResponse,
+			long averageBytes, double timeStamp) {
 		super();
-		Size = size;
-		this.url = new URL(url);
-		this.averageResponse = averageResponse;
-		this.averageBytes = averageBytes;
-		this.timeStamp = timeStamp;
+		this.size = new LongWritable(size);
+		this.url = new Text(url);
+		this.averageResponse =  new LongWritable(averageResponse);
+		this.averageBytes =  new LongWritable(averageBytes);
+		this.timeStamp =  new DoubleWritable(timeStamp);
 	}
-	public double getSize() {
-		return Size;
+	public LongWritable getSize() {
+		return size;
 	}
-	public void setSize(double size) {
-		Size = size;
+	public void setSize(LongWritable size) {
+		this.size = size;
 	}
-	public URL getUrl() {
+	public Text getUrl() {
 		return url;
 	}
-	public void setUrl(URL url) {
+	public void setUrl(Text url) {
 		this.url = url;
 	}
-	public double getAverageResponse() {
+	public LongWritable getAverageResponse() {
 		return averageResponse;
 	}
-	public void setAverageResponse(double averageResponse) {
+	public void setAverageResponse(LongWritable averageResponse) {
 		this.averageResponse = averageResponse;
 	}
-	public double getAverageBytes() {
+	public LongWritable getAverageBytes() {
 		return averageBytes;
 	}
-	public void setAverageBytes(double averageBytes) {
+	public void setAverageBytes(LongWritable averageBytes) {
 		this.averageBytes = averageBytes;
 	}
-	public double getTimeStamp() {
+	public DoubleWritable getTimeStamp() {
 		return timeStamp;
 	}
-	public void setTimeStamp(double timeStamp) {
+	public void setTimeStamp(DoubleWritable timeStamp) {
 		this.timeStamp = timeStamp;
+	}
+	public void readFields(DataInput in) throws IOException {
+		size.readFields(in);
+		url.readFields(in);
+		averageResponse.readFields(in);
+		averageBytes.readFields(in);
+		timeStamp.readFields(in);
+	}
+	public void write(DataOutput out) throws IOException {
+		size.write(out);
+		url.write(out);
+		averageResponse.write(out);
+		averageBytes.write(out);
+		timeStamp.write(out);
+		
+	}
+	public int compareTo(Site o) {
+		return url.compareTo(o.getUrl());
+	}
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof Site)) return false;		
-		return super.equals(((Site)obj).getUrl().getAuthority());
+		if(obj==null)return false;
+		if(!(obj instanceof Site))return false;		
+		return url.equals(((Site)obj).getUrl());
 	}
 	
 }
