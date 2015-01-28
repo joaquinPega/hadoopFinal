@@ -17,7 +17,7 @@ public class MediaMapper extends Mapper<LongWritable, Text,Text,Site>{
 			InterruptedException {
 		String line = value.toString().toLowerCase().replaceAll("\t", " ");
 		String[] words = line.split(" ");
-		for (String word : words){
+		for (int i =0;i<= words.length;i++){
 			
 		}
 	}

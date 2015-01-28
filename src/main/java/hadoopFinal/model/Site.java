@@ -1,5 +1,6 @@
 package hadoopFinal.model;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Site {
@@ -11,6 +12,15 @@ public class Site {
 	
 	
 	
+	public Site(double size, String url, double averageResponse,
+			double averageBytes, double timeStamp) throws MalformedURLException {
+		super();
+		Size = size;
+		this.url = new URL(url);
+		this.averageResponse = averageResponse;
+		this.averageBytes = averageBytes;
+		this.timeStamp = timeStamp;
+	}
 	public double getSize() {
 		return Size;
 	}
@@ -40,6 +50,12 @@ public class Site {
 	}
 	public void setTimeStamp(double timeStamp) {
 		this.timeStamp = timeStamp;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (!(obj instanceof Site)) return false;		
+		return super.equals(((Site)obj).getUrl().getAuthority());
 	}
 	
 }
